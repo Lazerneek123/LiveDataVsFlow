@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         onChangeListenerLiveData()
         viewModel.usersLiveData.observe(this) {
             itemAdapter.submitList(it)
-            binding.countItem.text = "List: " + it.size.toString()
+            binding.countItem.text = "LiveData List: " + it.size.toString()
         }
         addLiveData()
         searchLiveData()
