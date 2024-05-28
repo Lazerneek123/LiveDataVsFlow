@@ -8,6 +8,9 @@ interface ItemDatabaseDao {
     @Insert(entity = User::class, onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: User)
 
+    @Update
+    fun update(user: User)
+
     @Query("SELECT * FROM users")
     fun getAllUsers(): List<User>
 

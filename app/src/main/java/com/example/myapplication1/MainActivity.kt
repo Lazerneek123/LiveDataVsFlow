@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.setLeterOrWord(true) // встановлення пошуку по буквам
 
         recyclerView = binding.userListRecyclerView
-        itemAdapter = ItemAdapter()
+        itemAdapter = ItemAdapter(supportFragmentManager)
 
         realizationLiveData()
         initRcView()

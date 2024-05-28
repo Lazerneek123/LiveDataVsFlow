@@ -3,21 +3,23 @@ package com.example.myapplication1.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication1.MainActivity
 import com.example.myapplication1.databinding.ItemUserBinding
 import com.example.myapplication1.models.User
+import com.example.myapplication1.sheet.BottomSheetEditUser
 
-class ItemAdapter :
+class ItemAdapter (private val fragmentManager: FragmentManager) :
     ListAdapter<User, ItemAdapter.ItemHolder>(ItemHolder.ItemComparator()) {
 
     class ItemHolder(
-        val binding: ItemUserBinding
+        private val binding: ItemUserBinding,
+        private val fragmentManager: FragmentManager
     ) :
         RecyclerView.ViewHolder(binding.root), OnAdapterClick {
-
         @SuppressLint("SetTextI18n")
         fun bind(user: User) = with(binding) {
             userName.text = user.name
@@ -26,7 +28,7 @@ class ItemAdapter :
 
             floatingActionButtonDelete.setOnClickListener {
                 val builder = android.app.AlertDialog.Builder(binding.root.context)
-                builder.setTitle("Are you sure you want to delete this user?")
+                builder.setTitle("Are you sure you want to delete this user ${user.name}?")
                     .setNegativeButton("Yes") { dialog, _ ->
                         (binding.root.context as MainActivity).viewModel.deleteUser(user)
                         dialog.dismiss()
@@ -34,6 +36,12 @@ class ItemAdapter :
                     .setPositiveButton("No") { dialog, _ ->
                         dialog.dismiss()
                     }.show()
+            }
+
+            floatingActionButtonEdit.setOnClickListener {
+                (binding.root.context as MainActivity).viewModel._user.value = user
+                val bottomSheetInformation = BottomSheetEditUser()
+                bottomSheetInformation.show(fragmentManager, "TAG")
             }
 
             onClick()
@@ -53,14 +61,16 @@ class ItemAdapter :
 
         companion object {
             fun create(
-                parent: ViewGroup
+                parent: ViewGroup,
+                fragmentManager: FragmentManager
             ): ItemHolder {
                 return ItemHolder(
                     ItemUserBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ),
+                    fragmentManager
                 )
             }
         }
@@ -78,7 +88,7 @@ class ItemAdapter :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
-        return ItemHolder.create(parent)
+        return ItemHolder.create(parent, fragmentManager)
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {

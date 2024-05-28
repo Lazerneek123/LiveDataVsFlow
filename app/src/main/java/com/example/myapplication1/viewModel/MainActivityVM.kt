@@ -16,10 +16,15 @@ class MainActivityVM(application: Application, private val context: Context) : V
     private var _usersLiveData = MutableLiveData<List<User>>()
     val usersLiveData: LiveData<List<User>> = _usersLiveData
 
+    var _user = MutableLiveData<User>()
+    val user: LiveData<User> = _user
+    //var userT: User = User("Roman", "Like a football", "+38094959056", true, 12)
+
     private var _leterOrWord = MutableLiveData<Boolean>()
     val leterOrWord: LiveData<Boolean> = _leterOrWord
 
     private val database = ItemDatabase.getInstance(application).itemDatabaseDao
+
 
     fun setLeterOrWord(boolean: Boolean) {
         _leterOrWord.value = boolean
@@ -70,6 +75,12 @@ class MainActivityVM(application: Application, private val context: Context) : V
             } else {
                 _usersLiveData.value = database.getAllUsers() // Відновлення повного списку
             }
+        }
+    }
+
+    fun updateUser(user: User) {
+        viewModelScope.launch(Dispatchers.Main) {
+            database.update(user)
         }
     }
 

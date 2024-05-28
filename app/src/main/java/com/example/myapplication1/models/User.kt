@@ -10,6 +10,7 @@ data class User(
     var name: String? = null,
 
     @ColumnInfo(name = "status")
+
     var status: String? = null,
 
     @ColumnInfo(name = "phone_number")
