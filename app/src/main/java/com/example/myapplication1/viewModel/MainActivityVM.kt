@@ -16,9 +16,9 @@ class MainActivityVM(application: Application, private val context: Context) : V
     private var _usersLiveData = MutableLiveData<List<User>>()
     val usersLiveData: LiveData<List<User>> = _usersLiveData
 
-    var _user = MutableLiveData<User>()
-    val user: LiveData<User> = _user
-    //var userT: User = User("Roman", "Like a football", "+38094959056", true, 12)
+    //var _user = MutableLiveData<User>()
+    //val user: LiveData<User> = _user
+    var user: User = User("Roman", "Like a football", "+38094959056", true, 12)
 
     private var _leterOrWord = MutableLiveData<Boolean>()
     val leterOrWord: LiveData<Boolean> = _leterOrWord
@@ -31,12 +31,12 @@ class MainActivityVM(application: Application, private val context: Context) : V
     }
 
     fun loadListLiveData() {
-        viewModelScope.launch(Dispatchers.Main) {
-            if (database.listUsersEmpty() == null) {
+        if (database.listUsersEmpty() == null) {
+            viewModelScope.launch(Dispatchers.Main) {
                 database.insert(User("Roman", "Like a football", "+38094959056", true, 12))
             }
-            _usersLiveData.value = database.getAllUsers()
         }
+        updateListLiveData()
     }
 
     fun addUserLiveData(user: User) {
@@ -80,7 +80,18 @@ class MainActivityVM(application: Application, private val context: Context) : V
 
     fun updateUser(user: User) {
         viewModelScope.launch(Dispatchers.Main) {
-            database.update(user)
+            try {
+                database.update(user)
+                //updateListLiveData()
+                _usersLiveData.value = database.getAllUsers()
+                /*val u = User("Roman", "Like a football", "+38094959056", true, 12)
+                u.id = 1
+                val uu = ArrayList<User>()
+                uu.add(u)
+                _usersLiveData.value = uu*/
+            } catch (e: Exception) {
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

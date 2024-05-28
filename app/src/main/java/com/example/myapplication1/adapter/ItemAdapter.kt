@@ -39,7 +39,7 @@ class ItemAdapter (private val fragmentManager: FragmentManager) :
             }
 
             floatingActionButtonEdit.setOnClickListener {
-                (binding.root.context as MainActivity).viewModel._user.value = user
+                (binding.root.context as MainActivity).viewModel.user = user
                 val bottomSheetInformation = BottomSheetEditUser()
                 bottomSheetInformation.show(fragmentManager, "TAG")
             }

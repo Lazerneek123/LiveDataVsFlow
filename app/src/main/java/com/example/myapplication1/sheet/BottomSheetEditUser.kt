@@ -33,7 +33,8 @@ class BottomSheetEditUser : BottomSheetDialogFragment() {
         binding = PopUpEditUserBinding.inflate(layoutInflater)
 
         with(binding!!) {
-            mainActivityViewModel.user.observe(viewLifecycleOwner) { user ->
+            //mainActivityViewModel.user.observe(viewLifecycleOwner) { user1 ->
+                val user = mainActivityViewModel.user
                 userNameModel.setText(user.name)
                 userStatusModel.setText(user.status)
                 userPhoneModel.setText(user.phoneNumber)
@@ -45,9 +46,10 @@ class BottomSheetEditUser : BottomSheetDialogFragment() {
                     user.phoneNumber = userPhoneModel.text.toString()
                     user.age = userAgeModel.text.toString().toIntOrNull() ?: 0
                     mainActivityViewModel.updateUser(user)
+                    //(context as MainActivity).viewModel.updateUser(user)
                     dismiss()
                 }
-            }
+            //}
         }
 
 

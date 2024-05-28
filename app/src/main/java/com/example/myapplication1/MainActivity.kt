@@ -3,6 +3,7 @@ package com.example.myapplication1
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,10 +39,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun realizationLiveData() {
         onChangeListenerLiveData()
+
+        val startTime = System.nanoTime()
+
         viewModel.usersLiveData.observe(this) {
             itemAdapter.submitList(it)
             binding.countItem.text = "LiveData List: " + it.size.toString()
         }
+
+        val endTime = System.nanoTime() // Кінець вимірювання часу
+        val duration = endTime - startTime // Різниця в часі
+
+        Log.d("Timing", "Time to execute (LiveData): ${duration / 1_000_000} ms (${duration} ns)")
+
         addLiveData()
         searchLiveData()
     }
