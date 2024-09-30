@@ -12,7 +12,6 @@ import com.example.myapplication1.adapter.ItemAdapter
 import com.example.myapplication1.databinding.ActivityMainBinding
 import com.example.myapplication1.sheet.BottomSheetUser
 import com.example.myapplication1.viewModel.MainActivityVM
-import com.example.myapplication1.viewModel.MainActivityVMFactory
 
 class MainActivity : AppCompatActivity() {
     lateinit var viewModel: MainActivityVM
@@ -25,10 +24,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val factory = MainActivityVMFactory(application, this)
-        viewModel = ViewModelProvider(this, factory)[MainActivityVM::class.java]
+        viewModel = ViewModelProvider(this)[MainActivityVM::class.java]
 
-        viewModel.setLeterOrWord(true) // встановлення пошуку по буквам
+        viewModel.setLeterOrWord(true) // setting search by letters
 
         recyclerView = binding.userListRecyclerView
         itemAdapter = ItemAdapter(supportFragmentManager)

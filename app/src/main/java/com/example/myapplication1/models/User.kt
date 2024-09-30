@@ -10,13 +10,12 @@ data class User(
     var name: String? = null,
 
     @ColumnInfo(name = "status")
-
     var status: String? = null,
 
-    @ColumnInfo(name = "phone_number")
+    @ColumnInfo(name = "phoneNumber")
     var phoneNumber: String? = null,
 
-    @ColumnInfo(name = "online_status")
+    @ColumnInfo(name = "onlineStatus")
     var onlineStatus: Boolean = false,
 
     @ColumnInfo(name = "age")
@@ -24,6 +23,6 @@ data class User(
 
 ) {
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    var id: Int = 0
+    @ColumnInfo(name = "userId")
+    var userId: Int = 0
 }

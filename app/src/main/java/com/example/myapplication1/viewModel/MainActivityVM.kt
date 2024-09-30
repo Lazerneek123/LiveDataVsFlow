@@ -2,17 +2,19 @@ package com.example.myapplication1.viewModel
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication1.App
 import com.example.myapplication1.database.ItemDatabase
 import com.example.myapplication1.models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivityVM(application: Application, private val context: Context) : ViewModel() {
+class MainActivityVM(application: Application) : AndroidViewModel(application) {
     private var _usersLiveData = MutableLiveData<List<User>>()
     val usersLiveData: LiveData<List<User>> = _usersLiveData
 
@@ -23,7 +25,7 @@ class MainActivityVM(application: Application, private val context: Context) : V
     private var _leterOrWord = MutableLiveData<Boolean>()
     val leterOrWord: LiveData<Boolean> = _leterOrWord
 
-    private val database = ItemDatabase.getInstance(application).itemDatabaseDao
+    private val database = (application as App).dataBase.itemDatabaseDao
 
 
     fun setLeterOrWord(boolean: Boolean) {
@@ -45,7 +47,8 @@ class MainActivityVM(application: Application, private val context: Context) : V
                 database.insert(user)
                 updateListLiveData()
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                Log.d("errorDatabase", e.message!!)
             }
         }
     }
@@ -56,7 +59,7 @@ class MainActivityVM(application: Application, private val context: Context) : V
                 database.delete(user)
                 updateListLiveData()
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                Log.d("errorDatabase", e.message!!)
             }
         }
     }
@@ -90,7 +93,7 @@ class MainActivityVM(application: Application, private val context: Context) : V
                 uu.add(u)
                 _usersLiveData.value = uu*/
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                Log.d("errorDatabase", e.message!!)
             }
         }
     }
